@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pilip Yom | Web Developer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">Pilip<span>Yom</span></div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- HERO / PROFILE -->
+<section id="home" class="hero reveal">
+  <div class="profile-card">
+    <img src="profile.jpg" alt="Profile">
+    <h1>Pilip Yom</h1>
+    <h3>IT Web Developer</h3>
+    <p>
+      I build modern, clean, and user-friendly web applications.
+      Passionate about UI design, performance, and real-world systems.
+    </p>
+
+    <div class="profile-btns">
+      <button onclick="scrollToSection('projects')">View Projects</button>
+      <button class="outline" onclick="scrollToSection('contact')">Contact Me</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section reveal">
+  <h2>Projects</h2>
+  <p class="center">Some systems I have built</p>
+
+  <div class="project-grid">
+
+    <div class="project-card">
+      <div class="project-header">POS System</div>
+      <div class="project-body">
+        <p>
+          Web-based Point of Sale system with authentication, product management,
+          categories, and reports.
+        </p>
+        <span>PHP • MySQL • Bootstrap</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">Inventory System</div>
+      <div class="project-body">
+        <p>
+          Inventory and stock management system with CRUD operations,
+          live search, and pagination.
+        </p>
+        <span>PHP • JavaScript • MySQL</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-header">Authentication System</div>
+      <div class="project-body">
+        <p>
+          Secure login and registration system using password hashing,
+          sessions, and role-based access.
+        </p>
+        <span>PHP • Security</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section dark reveal">
+  <h2>Skills</h2>
+
+  <div class="skills">
+    <span>HTML</span>
+    <span>CSS</span>
+    <span>JavaScript</span>
+    <span>Bootstrap</span>
+    <span>PHP</span>
+    <span>MySQL</span>
+    <span>Git</span>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section reveal">
+  <h2>Contact</h2>
+
+  <div class="contact-card">
+    <p><strong>Email:</strong> yourname@email.com</p>
+    <p><strong>GitHub:</strong> github.com/yourusername</p>
+    <p><strong>Location:</strong> Cambodia</p>
+  </div>
+</section>
+
+<footer>
+  © 2026 Pilip Yom • Web Developer
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
