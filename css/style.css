@@ -749,6 +749,7 @@
             background: var(--glass);
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
+            text-align: justify;
             border-radius: var(--border-radius);
             padding: 30px;
             position: relative;
