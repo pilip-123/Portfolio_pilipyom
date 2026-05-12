@@ -95,23 +95,131 @@ window.addEventListener('load', () => {
 window.addEventListener('scroll', animateSkillBars);
 
 // Contact form submission
+let popupHideTimer;
+
+function getContactApiUrl() {
+    const isLocalHost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    const isLiveServerPort = /^55\d{2}$/.test(window.location.port);
+
+    // VS Code Live Server cannot run /api functions, so route to Vercel local runtime.
+    if (isLocalHost && isLiveServerPort) {
+        return 'http://localhost:3000/api/contact-telegram';
+    }
+
+    return '/api/contact-telegram';
+}
+
+function hideMessagePopup() {
+    const popup = document.getElementById('message-popup');
+    if (!popup) return;
+
+    popup.classList.remove('show');
+}
+
+function showMessagePopup(title, message, type = 'success') {
+    let popup = document.getElementById('message-popup');
+
+    if (!popup) {
+        popup = document.createElement('div');
+        popup.id = 'message-popup';
+        popup.className = 'message-popup';
+        popup.setAttribute('role', 'status');
+        popup.setAttribute('aria-live', 'polite');
+        popup.innerHTML = `
+            <div class="message-popup-icon">
+                <i class="fas fa-circle-check"></i>
+            </div>
+            <div class="message-popup-content">
+                <h4 id="message-popup-title"></h4>
+                <p id="message-popup-text"></p>
+            </div>
+            <button type="button" class="message-popup-close" aria-label="Close message popup">
+                <i class="fas fa-xmark"></i>
+            </button>
+        `;
+
+        document.body.appendChild(popup);
+
+        const closeButton = popup.querySelector('.message-popup-close');
+        closeButton.addEventListener('click', () => {
+            hideMessagePopup();
+            clearTimeout(popupHideTimer);
+        });
+    }
+
+    const titleElement = popup.querySelector('#message-popup-title');
+    const textElement = popup.querySelector('#message-popup-text');
+    const iconElement = popup.querySelector('.message-popup-icon i');
+
+    titleElement.textContent = title;
+    textElement.textContent = message;
+    popup.classList.remove('success', 'error');
+    popup.classList.add(type);
+    iconElement.className = type === 'error' ? 'fas fa-circle-exclamation' : 'fas fa-circle-check';
+
+    popup.classList.add('show');
+
+    clearTimeout(popupHideTimer);
+    popupHideTimer = setTimeout(() => {
+        hideMessagePopup();
+    }, 4500);
+}
+
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', e => {
+    contactForm.addEventListener('submit', async e => {
         e.preventDefault();
         const submitBtn = contactForm.querySelector('button');
         const originalText = submitBtn.innerHTML;
+        const formData = new FormData(contactForm);
+        const payload = {
+            name: formData.get('name')?.toString().trim() || '',
+            email: formData.get('email')?.toString().trim() || '',
+            subject: formData.get('subject')?.toString().trim() || '',
+            message: formData.get('message')?.toString().trim() || ''
+        };
+
+        if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+            showMessagePopup(
+                'Missing Information',
+                'Please complete all fields before sending your message.',
+                'error'
+            );
+            return;
+        }
 
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         submitBtn.disabled = true;
 
-        // Simulate form submission
-        setTimeout(() => {
-            alert('Thank you for your message! I will get back to you soon.');
+        try {
+            const response = await fetch(getContactApiUrl(), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Request failed');
+            }
+
+            showMessagePopup(
+                'Message Sent Successfully',
+                'Thank you for reaching out. I will get back to you soon.',
+                'success'
+            );
             contactForm.reset();
+        } catch (_error) {
+            showMessagePopup(
+                'Unable To Send Message',
+                'Please try again in a moment or contact me directly by email.',
+                'error'
+            );
+        } finally {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
-        }, 1500);
+        }
     });
 }
 
