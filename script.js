@@ -101,12 +101,11 @@ function getContactApiUrl() {
     const isLocalHost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
     const isLiveServerPort = /^55\d{2}$/.test(window.location.port);
 
-    // VS Code Live Server cannot run /api functions, so route to Vercel local runtime.
     if (isLocalHost && isLiveServerPort) {
-        return 'http://localhost:3000/api/contact-telegram';
+        return 'http://localhost:3000/api/contact';
     }
 
-    return '/api/contact-telegram';
+    return '/api/contact';
 }
 
 function hideMessagePopup() {
@@ -249,5 +248,36 @@ window.addEventListener('scroll', () => {
     parallaxElements.forEach(el => {
         const speed = el.getAttribute('data-speed');
         el.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+});
+
+// Download CV with blob fallback for reliable download
+document.querySelectorAll('a[download]').forEach(link => {
+    link.addEventListener('click', async function (e) {
+        if (this.href && this.href.startsWith('blob:')) return;
+
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        const filename = this.getAttribute('download') || 'Pilip_Yom_CV.pdf';
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to fetch file');
+
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
+        } catch {
+            // Fallback: let the browser handle it natively
+            window.location.href = url;
+        }
     });
 });
