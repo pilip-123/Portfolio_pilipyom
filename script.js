@@ -74,6 +74,11 @@ const skillBars = document.querySelectorAll('.skill-progress-bar');
 
 function animateSkillBars() {
     skillBars.forEach(bar => {
+        const card = bar.closest('.skill-card');
+
+        // Only fill bars inside revealed cards (avoids invisible fill-in)
+        if (card && !card.classList.contains('revealed')) return;
+
         const barPosition = bar.getBoundingClientRect().top;
         const screenPosition = window.innerHeight / 1.3;
 
@@ -93,6 +98,40 @@ window.addEventListener('load', () => {
 
 // Animate on scroll
 window.addEventListener('scroll', animateSkillBars);
+
+// Staggered reveal for skill cards
+const skillCards = document.querySelectorAll('.skill-card');
+
+if (skillCards.length) {
+    const revealSkillCards = () => {
+        skillCards.forEach((card, index) => {
+            const delay = (index % 4) * 90;
+            card.style.transitionDelay = `${delay}ms`;
+            card.classList.add('revealed');
+            setTimeout(() => {
+                card.style.transitionDelay = '0ms';
+                animateSkillBars();
+            }, delay + 500);
+        });
+    };
+
+    if ('IntersectionObserver' in window) {
+        const skillsObserver = new IntersectionObserver(
+            entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        revealSkillCards();
+                        skillsObserver.disconnect();
+                    }
+                });
+            },
+            { threshold: 0.15 }
+        );
+        skillsObserver.observe(document.getElementById('skills'));
+    } else {
+        skillCards.forEach(card => card.classList.add('revealed'));
+    }
+}
 
 // Contact form submission
 let popupHideTimer;

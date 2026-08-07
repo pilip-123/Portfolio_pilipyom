@@ -185,6 +185,26 @@
             color: white;
         }
 
+        .btn-sm {
+            padding: 10px 22px;
+            font-size: 0.92rem;
+            gap: 8px;
+            box-shadow: 0 8px 18px -8px rgba(99, 102, 241, 0.45);
+        }
+
+        .btn-sm i {
+            font-size: 0.85rem;
+        }
+
+        .btn-sm:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 26px -10px rgba(99, 102, 241, 0.55);
+        }
+
+        .btn-sm:active {
+            transform: translateY(-1px) scale(0.97);
+        }
+
         .btn-cv-header {
             padding: 10px 18px;
             font-size: 0.9rem;
@@ -366,6 +386,7 @@
 
         body.light-mode .stat-item,
         body.light-mode .skill-category,
+        body.light-mode .skill-card,
         body.light-mode .project-card,
         body.light-mode .timeline-content,
         body.light-mode .contact-item,
@@ -383,6 +404,20 @@
 
         body.light-mode .skill-progress {
             background: rgba(15, 23, 42, 0.08);
+        }
+
+        body.light-mode .skill-icon {
+            background: rgba(15, 23, 42, 0.05);
+            border-color: rgba(15, 23, 42, 0.12);
+            color: color-mix(in srgb, var(--skill-color, var(--primary)) 72%, #0f172a);
+        }
+
+        body.light-mode .skill-percent {
+            color: color-mix(in srgb, var(--skill-color, var(--primary)) 75%, #0f172a);
+        }
+
+        body.light-mode .skill-card:hover .skill-icon {
+            color: white;
         }
 
         body.light-mode .timeline-date {
@@ -660,36 +695,98 @@
             color: var(--primary);
         }
 
-        .skill-bar {
-            margin-bottom: 25px;
+        .skill-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 14px;
+            margin-top: 26px;
         }
 
-        .skill-info {
+        .skill-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 22px 14px 18px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Only hide cards when JS is confirmed active (progressive enhancement) */
+        html.js .skill-card {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        html.js .skill-card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, var(--skill-color, var(--primary)), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--skill-color, var(--primary));
+            box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .skill-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 14px;
+            border-radius: 14px;
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            color: var(--skill-color, var(--primary));
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .skill-card:hover .skill-icon {
+            background: var(--skill-color, var(--primary));
+            color: white;
+            transform: scale(1.08) rotate(-4deg);
         }
 
         .skill-name {
+            display: block;
+            font-size: 1rem;
             font-weight: 600;
             color: white;
-        }
-
-        .skill-percent {
-            font-weight: 600;
-            color: var(--primary);
+            margin-bottom: 12px;
         }
 
         .skill-progress {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            height: 5px;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 4px;
             overflow: hidden;
+            margin-bottom: 10px;
         }
 
         .skill-progress-bar {
             height: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: linear-gradient(to right, var(--skill-color, var(--primary)), var(--secondary));
             border-radius: 4px;
             width: 0;
             transition: width 1.5s ease;
@@ -705,6 +802,12 @@
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             animation: shimmer 2s infinite;
+        }
+
+        .skill-percent {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--skill-color, var(--primary));
         }
 
         /* Projects Section */
@@ -1053,6 +1156,21 @@
         }
 
         /* Animations */
+        @media (prefers-reduced-motion: reduce) {
+            html.js .skill-card {
+                opacity: 1;
+                transform: none;
+            }
+
+            .skill-card:hover {
+                transform: none;
+            }
+
+            .skill-progress-bar::after {
+                animation: none;
+            }
+        }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
