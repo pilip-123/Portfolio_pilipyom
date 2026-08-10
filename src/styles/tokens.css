@@ -1,0 +1,69 @@
+/* ============================================================
+   Design tokens
+   ============================================================ */
+
+:root {
+  /* Brand */
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --secondary: #ec4899;
+
+  /* Surfaces (dark theme) */
+  --bg: #05060f;
+  --bg-soft: #0b0d1c;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  /* Text */
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+
+  /* Effects */
+  --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+  --gradient-soft: linear-gradient(135deg, rgba(99, 102, 241, 0.16), rgba(236, 72, 153, 0.12));
+
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 14px 34px -10px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 30px 60px -15px rgba(0, 0, 0, 0.55);
+  --shadow-primary: 0 20px 40px -12px rgba(99, 102, 241, 0.5);
+
+  /* Shape */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --container: 1180px;
+  --header-h: 78px;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Motion */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+/* Light theme overrides */
+html[data-theme='light'] {
+  --bg: #f4f6fb;
+  --bg-soft: #ffffff;
+  --surface: rgba(255, 255, 255, 0.75);
+  --surface-hover: rgba(255, 255, 255, 0.95);
+  --border: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.2);
+
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-faint: #64748b;
+
+  --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 14px 34px -10px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 30px 60px -15px rgba(15, 23, 42, 0.16);
+}

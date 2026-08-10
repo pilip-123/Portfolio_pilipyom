@@ -1,0 +1,1 @@
+export { getContactApiUrl } from './contactApi';

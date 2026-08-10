@@ -1,0 +1,15 @@
+/* ============================================================
+   Pilip Yom — Portfolio 2.0 (React)
+   Styles are split by concern and imported in cascade order:
+   1. tokens     — design tokens (variables)
+   2. base       — reset, elements, utilities, buttons
+   3. layout     — header, navigation, footer
+   4. sections   — hero, about, skills, projects, experience, contact
+   5. responsive — breakpoints & reduced motion
+   ============================================================ */
+
+@import './tokens.css';
+@import './base.css';
+@import './layout.css';
+@import './sections.css';
+@import './responsive.css';
